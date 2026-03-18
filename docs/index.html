@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brasileir&atilde;o em N&uacute;meros</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #238636;
+            --accent-hover: #2ea043;
+            --link: #58a6ff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 20px 0;
+            z-index: 100;
+        }
+
+        nav .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 12px;
+        }
+
+        nav .logo h2 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        nav .logo span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        nav a {
+            display: block;
+            padding: 6px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--text);
+            background: rgba(255,255,255,0.04);
+        }
+
+        nav .section-title {
+            padding: 14px 20px 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        /* MAIN */
+        main {
+            margin-left: 240px;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        header {
+            margin-bottom: 48px;
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--accent);
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        /* SECTIONS */
+        section {
+            margin-bottom: 48px;
+        }
+
+        section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section .section-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        /* CHART CARDS */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .chart-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .chart-card h3 {
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chart-card h3 a {
+            font-size: 12px;
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        .chart-card h3 a:hover {
+            text-decoration: underline;
+        }
+
+        .chart-card iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            background: #fff;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 64px;
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        footer a {
+            color: var(--link);
+            text-decoration: none;
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                bottom: 0;
+                top: auto;
+                left: 0;
+                width: 100%;
+                height: auto;
+                max-height: 50vh;
+                border-right: none;
+                border-top: 1px solid var(--border);
+                transform: translateY(calc(100% - 48px));
+                transition: transform 0.3s;
+            }
+
+            nav.open {
+                transform: translateY(0);
+            }
+
+            nav .toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 48px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--text);
+                border-bottom: 1px solid var(--border);
+            }
+
+            main {
+                margin-left: 0;
+                padding: 24px 16px 80px;
+            }
+
+            header h1 { font-size: 24px; }
+
+            .chart-card iframe { height: 350px; }
+        }
+
+        @media (min-width: 769px) {
+            nav .toggle { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<nav id="nav">
+    <div class="toggle" onclick="this.parentElement.classList.toggle('open')">Menu</div>
+    <div class="logo">
+        <h2>Brasileir&atilde;o</h2>
+        <span>S&eacute;rie A &middot; 2003&ndash;2026</span>
+    </div>
+
+    <div class="section-title">Vis&atilde;o Geral</div>
+    <a href="#visao-geral">M&eacute;dia de Gols</a>
+    <a href="#distribuicao-pontos">Distribui&ccedil;&atilde;o de Pontos</a>
+    <a href="#desvio-padrao">Desvio Padr&atilde;o</a>
+
+    <div class="section-title">Classifica&ccedil;&atilde;o</div>
+    <a href="#lider-rodada">L&iacute;der por Rodada</a>
+    <a href="#lider-heatmap">Heatmap L&iacute;der</a>
+    <a href="#bump-chart">Bump Chart</a>
+
+    <div class="section-title">Mandante vs Visitante</div>
+    <a href="#mandante-visitante">Vantagem do Mandante</a>
+    <a href="#top-mandantes">Top Mandantes</a>
+    <a href="#mandante-clube">Mandante por Clube</a>
+
+    <div class="section-title">Gols</div>
+    <a href="#gols-rodada">Gols por Rodada</a>
+    <a href="#gols-minuto">Gols por Minuto</a>
+    <a href="#primeiro-gol">Primeiro Gol</a>
+    <a href="#scatter-gols">Scatter Gols</a>
+    <a href="#heatmap-placares">Heatmap Placares</a>
+    <a href="#heatmap-gols-minuto">Gols: Minuto x Rodada</a>
+
+    <div class="section-title">Desempenho</div>
+    <a href="#desempenho-clubes">Desempenho Clubes</a>
+    <a href="#aproveitamento">Aproveitamento</a>
+    <a href="#titulos">T&iacute;tulos</a>
+
+    <div class="section-title">Turnos</div>
+    <a href="#turnos">1&ordm; vs 2&ordm; Turno</a>
+    <a href="#turnos-diff">Diferen&ccedil;a entre Turnos</a>
+
+    <div class="section-title">Rebaixamento</div>
+    <a href="#rebaixamento">An&aacute;lise Rebaixamento</a>
+    <a href="#rebaixamentos-lollipop">Rebaixamentos</a>
+
+    <div class="section-title">Pontua&ccedil;&atilde;o</div>
+    <a href="#pontuacao-objetivos">Pontua&ccedil;&atilde;o &amp; Objetivos</a>
+    <a href="#pontuacao-box">Box Plot Pontos</a>
+
+    <div class="section-title">Cart&otilde;es e Tempo</div>
+    <a href="#cartoes-posicao">Cart&otilde;es por Posi&ccedil;&atilde;o</a>
+    <a href="#gols-dia-semana">Gols por Dia da Semana</a>
+    <a href="#sazonalidade">Sazonalidade</a>
+    <a href="#efeito-cansaco">Efeito Cansa&ccedil;o</a>
+
+    <div class="section-title">Cl&aacute;ssicos e T&eacute;cnicos</div>
+    <a href="#classicos">Cl&aacute;ssicos</a>
+    <a href="#efeito-tecnico">Efeito T&eacute;cnico</a>
+
+    <div class="section-title">Hist&oacute;rico</div>
+    <a href="#maldicao-vice">Maldi&ccedil;&atilde;o do Vice</a>
+    <a href="#recem-promovidos">Rec&eacute;m-Promovidos</a>
+    <a href="#placares-decadas">Placares por D&eacute;cada</a>
+</nav>
+
+<main>
+    <header>
+        <h1>Brasileir&atilde;o em N&uacute;meros</h1>
+        <p>An&aacute;lise de dados do Campeonato Brasileiro S&eacute;rie A (2003&ndash;2026)</p>
+        <span class="badge">9.225 jogos analisados</span>
+    </header>
+
+    <!-- VISAO GERAL -->
+    <section id="visao-geral">
+        <h2>Vis&atilde;o Geral</h2>
+        <p class="section-desc">Panorama geral do campeonato ao longo dos anos.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>M&eacute;dia de Gols por Temporada <a href="charts/media_gols.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/media_gols.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="distribuicao-pontos">
+                <h3>Distribui&ccedil;&atilde;o de Pontos <a href="charts/distribuicao_pontos.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/distribuicao_pontos.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="desvio-padrao">
+                <h3>Desvio Padr&atilde;o da Pontua&ccedil;&atilde;o <a href="charts/desvio_padrao.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/desvio_padrao.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLASSIFICACAO -->
+    <section id="lider-rodada">
+        <h2>Classifica&ccedil;&atilde;o</h2>
+        <p class="section-desc">Evolu&ccedil;&atilde;o da lideran&ccedil;a e posi&ccedil;&otilde;es ao longo das rodadas.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>L&iacute;der por Rodada &rarr; Campe&atilde;o? <a href="charts/lider_por_rodada.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/lider_por_rodada.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="lider-heatmap">
+                <h3>Heatmap: L&iacute;der Foi Campe&atilde;o? <a href="charts/lider_heatmap.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/lider_heatmap.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="bump-chart">
+                <h3>Bump Chart &mdash; Posi&ccedil;&otilde;es por Rodada <a href="charts/bump_chart.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/bump_chart.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- MANDANTE VS VISITANTE -->
+    <section id="mandante-visitante">
+        <h2>Mandante vs Visitante</h2>
+        <p class="section-desc">A vantagem de jogar em casa no futebol brasileiro.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Vantagem do Mandante <a href="charts/mandante_visitante.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/mandante_visitante.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="top-mandantes">
+                <h3>Top Mandantes <a href="charts/top_mandantes.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/top_mandantes.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="mandante-clube">
+                <h3>Aproveitamento como Mandante por Clube <a href="charts/mandante_por_clube.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/mandante_por_clube.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- GOLS -->
+    <section id="gols-rodada">
+        <h2>Gols</h2>
+        <p class="section-desc">Padr&otilde;es de gols: quando, como e quantos.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Gols por Rodada <a href="charts/gols_por_rodada.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/gols_por_rodada.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="gols-minuto">
+                <h3>Gols por Minuto <a href="charts/gols_por_minuto.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/gols_por_minuto.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="primeiro-gol">
+                <h3>Primeiro Gol <a href="charts/primeiro_gol.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/primeiro_gol.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="scatter-gols">
+                <h3>Scatter: Gols Marcados vs Sofridos <a href="charts/scatter_gols.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/scatter_gols.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="heatmap-placares">
+                <h3>Heatmap de Placares <a href="charts/heatmap_placares.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/heatmap_placares.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="heatmap-gols-minuto">
+                <h3>Heatmap: Gols por Minuto x Rodada <a href="charts/heatmap_gols_minuto_rodada.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/heatmap_gols_minuto_rodada.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- DESEMPENHO -->
+    <section id="desempenho-clubes">
+        <h2>Desempenho</h2>
+        <p class="section-desc">Compara&ccedil;&atilde;o de performance entre clubes.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Desempenho dos Clubes <a href="charts/desempenho_clubes.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/desempenho_clubes.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="aproveitamento">
+                <h3>Aproveitamento <a href="charts/aproveitamento_clubes.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/aproveitamento_clubes.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="titulos">
+                <h3>T&iacute;tulos por Clube <a href="charts/titulos.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/titulos.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- TURNOS -->
+    <section id="turnos">
+        <h2>Turnos</h2>
+        <p class="section-desc">Compara&ccedil;&atilde;o entre primeiro e segundo turno.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>1&ordm; Turno vs 2&ordm; Turno <a href="charts/turnos.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/turnos.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="turnos-diff">
+                <h3>Diferen&ccedil;a entre Turnos <a href="charts/turnos_diff.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/turnos_diff.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- REBAIXAMENTO -->
+    <section id="rebaixamento">
+        <h2>Rebaixamento</h2>
+        <p class="section-desc">An&aacute;lise hist&oacute;rica dos rebaixamentos.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Pontua&ccedil;&atilde;o de Rebaixamento <a href="charts/rebaixamento.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/rebaixamento.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="rebaixamentos-lollipop">
+                <h3>Rebaixamentos por Clube <a href="charts/rebaixamentos_lollipop.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/rebaixamentos_lollipop.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- PONTUACAO -->
+    <section id="pontuacao-objetivos">
+        <h2>Pontua&ccedil;&atilde;o</h2>
+        <p class="section-desc">Metas e distribui&ccedil;&atilde;o de pontos.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Pontua&ccedil;&atilde;o &amp; Objetivos <a href="charts/pontuacao_objetivos.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/pontuacao_objetivos.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="pontuacao-box">
+                <h3>Box Plot de Pontua&ccedil;&atilde;o <a href="charts/pontuacao_box.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/pontuacao_box.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARTOES E TEMPO -->
+    <section id="cartoes-posicao">
+        <h2>Cart&otilde;es e Tempo</h2>
+        <p class="section-desc">Cart&otilde;es, sazonalidade e padr&otilde;es temporais.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Cart&otilde;es por Posi&ccedil;&atilde;o <a href="charts/cartoes_posicao.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/cartoes_posicao.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="gols-dia-semana">
+                <h3>Gols por Dia da Semana <a href="charts/gols_dia_semana.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/gols_dia_semana.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="sazonalidade">
+                <h3>Sazonalidade <a href="charts/sazonalidade.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/sazonalidade.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="efeito-cansaco">
+                <h3>Efeito Cansa&ccedil;o <a href="charts/efeito_cansaco.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/efeito_cansaco.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLASSICOS E TECNICOS -->
+    <section id="classicos">
+        <h2>Cl&aacute;ssicos e T&eacute;cnicos</h2>
+        <p class="section-desc">Confrontos cl&aacute;ssicos e impacto dos treinadores.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Cl&aacute;ssicos <a href="charts/classicos.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/classicos.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="efeito-tecnico">
+                <h3>Efeito do T&eacute;cnico <a href="charts/efeito_tecnico.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/efeito_tecnico.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- HISTORICO -->
+    <section id="maldicao-vice">
+        <h2>Hist&oacute;rico</h2>
+        <p class="section-desc">Curiosidades e padr&otilde;es hist&oacute;ricos.</p>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Maldi&ccedil;&atilde;o do Vice <a href="charts/maldicao_vice.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/maldicao_vice.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="recem-promovidos">
+                <h3>Rec&eacute;m-Promovidos <a href="charts/recem_promovidos.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/recem_promovidos.html" loading="lazy"></iframe>
+            </div>
+            <div class="chart-card" id="placares-decadas">
+                <h3>Placares por D&eacute;cada <a href="charts/placares_decadas.html" target="_blank">Abrir</a></h3>
+                <iframe src="charts/placares_decadas.html" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Dados: Brasileir&atilde;o S&eacute;rie A, 2003&ndash;2026 &middot; <a href="https://github.com/danielsilva/dados-futebol-br" target="_blank">GitHub</a></p>
+    </footer>
+</main>
+
+<script>
+// Highlight active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+function updateActiveLink() {
+    const scrollPos = window.scrollY + 100;
+    let current = '';
+
+    sections.forEach(section => {
+        if (section.offsetTop <= scrollPos) {
+            current = section.id;
+        }
+    });
+
+    // Also check chart-cards with IDs
+    document.querySelectorAll('.chart-card[id]').forEach(card => {
+        if (card.offsetTop <= scrollPos) {
+            current = card.id;
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+        }
+    });
+}
+
+window.addEventListener('scroll', updateActiveLink);
+updateActiveLink();
+
+// Close mobile nav on link click
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        document.getElementById('nav').classList.remove('open');
+    });
+});
+</script>
+
+</body>
+</html>
